@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package tradier;
 
-option go_package = "./proto;tradier";
+option go_package = "./proto;tests";
 
 service Tradier {
 	rpc Quote(QuoteRequest) returns (QuoteResponse) {}
