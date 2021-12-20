@@ -9,7 +9,7 @@ import (
 	"github.com/micro/micro/v3/service/logger"
 	tradierlib "github.com/timpalpant/go-tradier"
 
-	pb "tradier/proto"
+	pb "github.com/egargale/tradier_gomicro_backend/tests/proto"
 )
 
 type DateTime struct {
