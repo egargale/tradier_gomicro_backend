@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/egargale/tradier_gomicro_backend/services/tests/handler"
-	"github.com/egargale/tradier_gomicro_backend/services/tests/proto"
+	"tests/handler"
+	"tests/proto"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/logger"
