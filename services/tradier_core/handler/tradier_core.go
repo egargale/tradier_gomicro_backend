@@ -5,7 +5,7 @@ import (
 
 	log "github.com/micro/micro/v3/service/logger"
 
-	tradier_core "tradier_core/proto"
+	tradier_core "github.com/egargale/tradier_gomicro_backend/services/tradier_core/proto"
 )
 
 type Tradier_core struct{}

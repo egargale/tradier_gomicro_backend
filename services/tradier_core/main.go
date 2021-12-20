@@ -1,8 +1,8 @@
 package main
 
 import (
-	"tradier_core/handler"
-	pb "tradier_core/proto"
+	"github.com/egargale/tradier_gomicro_backend/services/tradier_core/handler"
+	pb "github.com/egargale/tradier_gomicro_backend/services/tradier_core/proto"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/logger"
