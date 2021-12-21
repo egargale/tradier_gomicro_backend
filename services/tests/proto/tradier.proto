@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package tradier;
+package tests;
 
 option go_package = "./proto;tests";
 
-service Tradier {
+service Tests {
 	rpc Quote(QuoteRequest) returns (QuoteResponse) {}
 	rpc GetMarketState(MarketeStateRequest) returns (MarketeStateResponse) {}
 }

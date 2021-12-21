@@ -1,4 +1,4 @@
-module github.com/egargale/tradier_gomicro_backend/services/tests
+module tests
 
 go 1.17
 

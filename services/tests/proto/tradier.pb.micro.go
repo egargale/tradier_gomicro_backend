@@ -33,33 +33,33 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Api Endpoints for Tradier service
+// Api Endpoints for Tests service
 
-func NewTradierEndpoints() []*api.Endpoint {
+func NewTestsEndpoints() []*api.Endpoint {
 	return []*api.Endpoint{}
 }
 
-// Client API for Tradier service
+// Client API for Tests service
 
-type TradierService interface {
+type TestsService interface {
 	Quote(ctx context.Context, in *QuoteRequest, opts ...client.CallOption) (*QuoteResponse, error)
 	GetMarketState(ctx context.Context, in *MarketeStateRequest, opts ...client.CallOption) (*MarketeStateResponse, error)
 }
 
-type tradierService struct {
+type testsService struct {
 	c    client.Client
 	name string
 }
 
-func NewTradierService(name string, c client.Client) TradierService {
-	return &tradierService{
+func NewTestsService(name string, c client.Client) TestsService {
+	return &testsService{
 		c:    c,
 		name: name,
 	}
 }
 
-func (c *tradierService) Quote(ctx context.Context, in *QuoteRequest, opts ...client.CallOption) (*QuoteResponse, error) {
-	req := c.c.NewRequest(c.name, "Tradier.Quote", in)
+func (c *testsService) Quote(ctx context.Context, in *QuoteRequest, opts ...client.CallOption) (*QuoteResponse, error) {
+	req := c.c.NewRequest(c.name, "Tests.Quote", in)
 	out := new(QuoteResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -68,8 +68,8 @@ func (c *tradierService) Quote(ctx context.Context, in *QuoteRequest, opts ...cl
 	return out, nil
 }
 
-func (c *tradierService) GetMarketState(ctx context.Context, in *MarketeStateRequest, opts ...client.CallOption) (*MarketeStateResponse, error) {
-	req := c.c.NewRequest(c.name, "Tradier.GetMarketState", in)
+func (c *testsService) GetMarketState(ctx context.Context, in *MarketeStateRequest, opts ...client.CallOption) (*MarketeStateResponse, error) {
+	req := c.c.NewRequest(c.name, "Tests.GetMarketState", in)
 	out := new(MarketeStateResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -78,33 +78,33 @@ func (c *tradierService) GetMarketState(ctx context.Context, in *MarketeStateReq
 	return out, nil
 }
 
-// Server API for Tradier service
+// Server API for Tests service
 
-type TradierHandler interface {
+type TestsHandler interface {
 	Quote(context.Context, *QuoteRequest, *QuoteResponse) error
 	GetMarketState(context.Context, *MarketeStateRequest, *MarketeStateResponse) error
 }
 
-func RegisterTradierHandler(s server.Server, hdlr TradierHandler, opts ...server.HandlerOption) error {
-	type tradier interface {
+func RegisterTestsHandler(s server.Server, hdlr TestsHandler, opts ...server.HandlerOption) error {
+	type tests interface {
 		Quote(ctx context.Context, in *QuoteRequest, out *QuoteResponse) error
 		GetMarketState(ctx context.Context, in *MarketeStateRequest, out *MarketeStateResponse) error
 	}
-	type Tradier struct {
-		tradier
+	type Tests struct {
+		tests
 	}
-	h := &tradierHandler{hdlr}
-	return s.Handle(s.NewHandler(&Tradier{h}, opts...))
+	h := &testsHandler{hdlr}
+	return s.Handle(s.NewHandler(&Tests{h}, opts...))
 }
 
-type tradierHandler struct {
-	TradierHandler
+type testsHandler struct {
+	TestsHandler
 }
 
-func (h *tradierHandler) Quote(ctx context.Context, in *QuoteRequest, out *QuoteResponse) error {
-	return h.TradierHandler.Quote(ctx, in, out)
+func (h *testsHandler) Quote(ctx context.Context, in *QuoteRequest, out *QuoteResponse) error {
+	return h.TestsHandler.Quote(ctx, in, out)
 }
 
-func (h *tradierHandler) GetMarketState(ctx context.Context, in *MarketeStateRequest, out *MarketeStateResponse) error {
-	return h.TradierHandler.GetMarketState(ctx, in, out)
+func (h *testsHandler) GetMarketState(ctx context.Context, in *MarketeStateRequest, out *MarketeStateResponse) error {
+	return h.TestsHandler.GetMarketState(ctx, in, out)
 }
