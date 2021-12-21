@@ -10,7 +10,7 @@ import (
 	tradierlib "github.com/timpalpant/go-tradier"
 
 	// pb "github.com/egargale/tradier_gomicro_backend/services/tests/proto"
-	pb "tests/proto"
+	pb "tradier_gomicro_backend/services/tests/proto"
 )
 
 type DateTime struct {

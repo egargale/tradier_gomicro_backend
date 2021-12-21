@@ -6,11 +6,13 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/micro/micro/v3 v3.8.0
 	github.com/micro/services v0.23.0
+	github.com/timpalpant/go-tradier v0.0.0-20210704143315-37ec934c77c0
 	google.golang.org/protobuf v1.27.1
 )
 
 require (
 	github.com/bitly/go-simplejson v0.5.0 // indirect
+	github.com/cenkalti/backoff v2.1.1+incompatible // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
