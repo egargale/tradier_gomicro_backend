@@ -2,7 +2,8 @@ package main
 
 import (
 	"tcore/handler"
-	pb "github.com/egargale/tradier_gomicro_backend/services/tcore/proto"
+
+	pb "tcore/proto"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/logger"

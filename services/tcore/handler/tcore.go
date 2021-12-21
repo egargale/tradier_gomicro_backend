@@ -5,7 +5,7 @@ import (
 
 	log "github.com/micro/micro/v3/service/logger"
 
-	tcore "github.com/egargale/tradier_gomicro_backend/services/tcore/proto"
+	tcore "tcore/proto"
 )
 
 type Tcore struct{}

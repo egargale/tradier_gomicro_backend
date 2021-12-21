@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/micro/micro/v3/service"
-	proto "github.com/micro/services/helloworld/proto"
+	proto "/home/enrico/projects"
 )
 
 func stream(i int) {
