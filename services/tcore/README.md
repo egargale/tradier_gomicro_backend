@@ -1,11 +1,11 @@
-# Tradier_core Service
+# Tcore Service
 
-This is the Tradier_core service
+This is the Tcore service
 
 Generated with
 
 ```
-micro new tradier_core
+micro new tcore
 ```
 
 ## Usage

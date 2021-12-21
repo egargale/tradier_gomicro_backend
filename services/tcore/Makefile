@@ -9,15 +9,15 @@ init:
 
 .PHONY: api
 api:
-	protoc --openapi_out=. --proto_path=. proto/tradier_core.proto
+	protoc --openapi_out=. --proto_path=. proto/tcore.proto
 
 .PHONY: proto
 proto:
-	protoc --proto_path=. --micro_out=. --go_out=:. proto/tradier_core.proto
+	protoc --proto_path=. --micro_out=. --go_out=:. proto/tcore.proto
 	
 .PHONY: build
 build:
-	go build -o tradier_core *.go
+	go build -o tcore *.go
 
 .PHONY: test
 test:
@@ -25,4 +25,4 @@ test:
 
 .PHONY: docker
 docker:
-	docker build . -t tradier_core:latest
+	docker build . -t tcore:latest
