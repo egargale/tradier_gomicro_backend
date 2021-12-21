@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"time"
 
+	proto "services/tcore/proto"
+
 	"github.com/micro/micro/v3/service"
-	proto "/home/enrico/projects"
+	"github.com/micro/micro/v3/service/client"
 )
 
 func stream(i int) {
@@ -43,7 +45,6 @@ func stream(i int) {
 	}
 }
 
-
 func main() {
 	// create and initialise a new service
 	srv := service.New()
@@ -55,7 +56,7 @@ func main() {
 	rsp, err := client.Stream(context.Background(), &proto.StreamRequest{
 		Name: "John",
 	})
-	
+
 	if err != nil {
 		fmt.Println("Error calling helloworld: ", err)
 		return
