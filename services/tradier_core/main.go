@@ -16,7 +16,7 @@ func main() {
 	)
 
 	// Register handler
-	pb.RegisterTradier_coreHandler(srv.Server(), new(handler.Tradier_core))
+	pb.RegisterTradierCoreHandler(srv.Server(), new(handler.Tradier_core))
 
 	// Run service
 	if err := srv.Run(); err != nil {

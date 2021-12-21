@@ -43,8 +43,6 @@ func NewTradierCoreEndpoints() []*api.Endpoint {
 
 type TradierCoreService interface {
 	Call(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
-	Stream(ctx context.Context, in *StreamingRequest, opts ...client.CallOption) (TradierCore_StreamService, error)
-	PingPong(ctx context.Context, opts ...client.CallOption) (TradierCore_PingPongService, error)
 }
 
 type tradierCoreService struct {
@@ -69,119 +67,15 @@ func (c *tradierCoreService) Call(ctx context.Context, in *Request, opts ...clie
 	return out, nil
 }
 
-func (c *tradierCoreService) Stream(ctx context.Context, in *StreamingRequest, opts ...client.CallOption) (TradierCore_StreamService, error) {
-	req := c.c.NewRequest(c.name, "TradierCore.Stream", &StreamingRequest{})
-	stream, err := c.c.Stream(ctx, req, opts...)
-	if err != nil {
-		return nil, err
-	}
-	if err := stream.Send(in); err != nil {
-		return nil, err
-	}
-	return &tradierCoreServiceStream{stream}, nil
-}
-
-type TradierCore_StreamService interface {
-	Context() context.Context
-	SendMsg(interface{}) error
-	RecvMsg(interface{}) error
-	Close() error
-	Recv() (*StreamingResponse, error)
-}
-
-type tradierCoreServiceStream struct {
-	stream client.Stream
-}
-
-func (x *tradierCoreServiceStream) Close() error {
-	return x.stream.Close()
-}
-
-func (x *tradierCoreServiceStream) Context() context.Context {
-	return x.stream.Context()
-}
-
-func (x *tradierCoreServiceStream) SendMsg(m interface{}) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCoreServiceStream) RecvMsg(m interface{}) error {
-	return x.stream.Recv(m)
-}
-
-func (x *tradierCoreServiceStream) Recv() (*StreamingResponse, error) {
-	m := new(StreamingResponse)
-	err := x.stream.Recv(m)
-	if err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
-func (c *tradierCoreService) PingPong(ctx context.Context, opts ...client.CallOption) (TradierCore_PingPongService, error) {
-	req := c.c.NewRequest(c.name, "TradierCore.PingPong", &Ping{})
-	stream, err := c.c.Stream(ctx, req, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &tradierCoreServicePingPong{stream}, nil
-}
-
-type TradierCore_PingPongService interface {
-	Context() context.Context
-	SendMsg(interface{}) error
-	RecvMsg(interface{}) error
-	Close() error
-	Send(*Ping) error
-	Recv() (*Pong, error)
-}
-
-type tradierCoreServicePingPong struct {
-	stream client.Stream
-}
-
-func (x *tradierCoreServicePingPong) Close() error {
-	return x.stream.Close()
-}
-
-func (x *tradierCoreServicePingPong) Context() context.Context {
-	return x.stream.Context()
-}
-
-func (x *tradierCoreServicePingPong) SendMsg(m interface{}) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCoreServicePingPong) RecvMsg(m interface{}) error {
-	return x.stream.Recv(m)
-}
-
-func (x *tradierCoreServicePingPong) Send(m *Ping) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCoreServicePingPong) Recv() (*Pong, error) {
-	m := new(Pong)
-	err := x.stream.Recv(m)
-	if err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // Server API for TradierCore service
 
 type TradierCoreHandler interface {
 	Call(context.Context, *Request, *Response) error
-	Stream(context.Context, *StreamingRequest, TradierCore_StreamStream) error
-	PingPong(context.Context, TradierCore_PingPongStream) error
 }
 
 func RegisterTradierCoreHandler(s server.Server, hdlr TradierCoreHandler, opts ...server.HandlerOption) error {
 	type tradierCore interface {
 		Call(ctx context.Context, in *Request, out *Response) error
-		Stream(ctx context.Context, stream server.Stream) error
-		PingPong(ctx context.Context, stream server.Stream) error
 	}
 	type TradierCore struct {
 		tradierCore
@@ -196,89 +90,4 @@ type tradierCoreHandler struct {
 
 func (h *tradierCoreHandler) Call(ctx context.Context, in *Request, out *Response) error {
 	return h.TradierCoreHandler.Call(ctx, in, out)
-}
-
-func (h *tradierCoreHandler) Stream(ctx context.Context, stream server.Stream) error {
-	m := new(StreamingRequest)
-	if err := stream.Recv(m); err != nil {
-		return err
-	}
-	return h.TradierCoreHandler.Stream(ctx, m, &tradierCoreStreamStream{stream})
-}
-
-type TradierCore_StreamStream interface {
-	Context() context.Context
-	SendMsg(interface{}) error
-	RecvMsg(interface{}) error
-	Close() error
-	Send(*StreamingResponse) error
-}
-
-type tradierCoreStreamStream struct {
-	stream server.Stream
-}
-
-func (x *tradierCoreStreamStream) Close() error {
-	return x.stream.Close()
-}
-
-func (x *tradierCoreStreamStream) Context() context.Context {
-	return x.stream.Context()
-}
-
-func (x *tradierCoreStreamStream) SendMsg(m interface{}) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCoreStreamStream) RecvMsg(m interface{}) error {
-	return x.stream.Recv(m)
-}
-
-func (x *tradierCoreStreamStream) Send(m *StreamingResponse) error {
-	return x.stream.Send(m)
-}
-
-func (h *tradierCoreHandler) PingPong(ctx context.Context, stream server.Stream) error {
-	return h.TradierCoreHandler.PingPong(ctx, &tradierCorePingPongStream{stream})
-}
-
-type TradierCore_PingPongStream interface {
-	Context() context.Context
-	SendMsg(interface{}) error
-	RecvMsg(interface{}) error
-	Close() error
-	Send(*Pong) error
-	Recv() (*Ping, error)
-}
-
-type tradierCorePingPongStream struct {
-	stream server.Stream
-}
-
-func (x *tradierCorePingPongStream) Close() error {
-	return x.stream.Close()
-}
-
-func (x *tradierCorePingPongStream) Context() context.Context {
-	return x.stream.Context()
-}
-
-func (x *tradierCorePingPongStream) SendMsg(m interface{}) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCorePingPongStream) RecvMsg(m interface{}) error {
-	return x.stream.Recv(m)
-}
-
-func (x *tradierCorePingPongStream) Send(m *Pong) error {
-	return x.stream.Send(m)
-}
-
-func (x *tradierCorePingPongStream) Recv() (*Ping, error) {
-	m := new(Ping)
-	if err := x.stream.Recv(m); err != nil {
-		return nil, err
-	}
-	return m, nil
 }
