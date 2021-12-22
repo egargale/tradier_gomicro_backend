@@ -9,27 +9,30 @@ import (
 	proto "github.com/micro/services/helloworld/proto"
 )
 
-func call(i int) {
+func Loop(a int) {
 	// create and initialise a new service
 	srv := service.New()
 
 	// create the proto client for helloworld
 	client := proto.NewHelloworldService("helloworld", srv.Client())
 
-	// call an endpoint on the service
-	rsp, err := client.Call(context.Background(), &proto.CallRequest{
-		Name: "Enrico",
-	})
-	if err != nil {
-		fmt.Println("Error calling helloworld: ", err)
-		return
+	for i := 0; i < a; i++ {
+		// call an endpoint on the service
+		rsp, err := client.Call(context.Background(), &proto.CallRequest{
+			Name: "CippALippa",
+		})
+		if err != nil {
+			fmt.Println("Error calling helloworld: ", err)
+			return
+		}
+
+		// print the response
+		fmt.Printf("Count %d Response: %s \n", i, rsp.Message)
+
+		// let's delay the process for exiting for reasons you'll see below
+		time.Sleep(time.Second * 5)
 	}
-
-	// print the response
-	fmt.Printf("Count %d Response: %s \n", i, rsp.Message)
-
-	// let's delay the process for exiting for reasons you'll see below
-	time.Sleep(time.Second * 5)
+	return
 }
 
 // func stream(i int) {
@@ -68,7 +71,21 @@ func call(i int) {
 
 func main() {
 
-	for i := 0; i < 10; i++ {
-		call(i)
+	// create and initialise a new service
+	srv := service.New()
+
+	// create the proto client for helloworld
+	client := proto.NewHelloworldService("helloworld", srv.Client())
+
+	// for i := 0; i < 10; i++ {
+	resp, err := client.Call(context.TODO(), &proto.CallRequest{
+		Name: "Enrico",
+	})
+	if err != nil {
+		fmt.Println("Error calling helloworld: ", err)
+		return
 	}
+	fmt.Println(resp.Message)
+	// }
+	// Loop(5)
 }
