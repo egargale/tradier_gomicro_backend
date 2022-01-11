@@ -3,7 +3,10 @@ module tradier_gomicro_backend
 go 1.17
 
 require (
+	github.com/PuerkitoBio/goquery v1.6.1
+	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e
 	github.com/golang/protobuf v1.5.2
+	github.com/google/uuid v1.1.2
 	github.com/micro/micro/v3 v3.8.0
 	github.com/micro/services v0.23.0
 	github.com/timpalpant/go-tradier v0.0.0-20210704143315-37ec934c77c0
@@ -11,6 +14,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/cascadia v1.1.0 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cenkalti/backoff v2.1.1+incompatible // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
@@ -19,7 +23,6 @@ require (
 	github.com/evanphx/json-patch/v5 v5.0.0 // indirect
 	github.com/go-acme/lego/v3 v3.4.0 // indirect
 	github.com/golang-jwt/jwt v0.0.0-20210529014511-0f726ea0e725 // indirect
-	github.com/google/uuid v1.1.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-version v1.2.1 // indirect
 	github.com/hpcloud/tail v1.0.0 // indirect
