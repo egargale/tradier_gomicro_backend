@@ -5,34 +5,13 @@ package tradier;
 option go_package = "./proto;tradier";
 
 service Tradier {
-	rpc Quote(QuoteRequest) returns (QuoteResponse) {}
-	rpc GetMarketState(MarketeStateRequest) returns (MarketeStateResponse) {}
+	rpc Stream(StreamRequest) returns (StreamResponse) {}
 }
 
-message MarketeStateRequest {}
-
-message MarketeStateResponse {
-	string time = 1;
-	string state = 2;
-	string description = 3;
-	string nextstate = 4;
-}
-
-message QuoteRequest {
+message StreamRequest {
 	string symbol = 1;
 }
 
-message QuoteResponse {
-  repeated QuoteInfo quote = 1;
-}
-
-message QuoteInfo {
-	string symbol = 1;
-	double last = 2;
-	double ask_price = 3;
-	double bid_price = 4;
-	int32 ask_size = 5;
-	int32 bid_size = 6;
-
+message StreamResponse {
 }
 

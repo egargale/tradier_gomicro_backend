@@ -26,9 +26,9 @@ type MarketStatus struct {
 }
 
 // Setup
-func Setup() *Tradier {
+func Setup() *ClientParams {
 	//
-	v, err := config.Get("tradier.sandbox.api")
+	v, err := config.Get("tradier.production.api")
 	if err != nil {
 		logger.Fatalf(" Tradier API config not found: %v", err)
 	}
@@ -36,7 +36,7 @@ func Setup() *Tradier {
 	if len(api) == 0 {
 		logger.Fatal("Tardier API not found")
 	}
-	v, err = config.Get("tradier.sandbox.account")
+	v, err = config.Get("tradier.production.account")
 	if err != nil {
 		logger.Fatalf("Tradier account not found: %v", err)
 	}
@@ -44,17 +44,8 @@ func Setup() *Tradier {
 	if len(account) == 0 {
 		logger.Fatal("Tradier account not found")
 	}
-	v, err = config.Get("tradier.sandbox.endpoint")
-	if err != nil {
-		logger.Fatalf("Tradier endpoint not found: %v", err)
-	}
-	endpoint := v.String("")
-	if len(endpoint) == 0 {
-		logger.Fatal("Tradier endpoint not found")
-	}
-	return &Tradier{
-		Api:      api,
-		Account:  account,
-		Endpoint: endpoint,
+	return &ClientParams{
+		AuthToken: api,
+		Account:   account,
 	}
 }

@@ -42,8 +42,7 @@ func NewTradierEndpoints() []*api.Endpoint {
 // Client API for Tradier service
 
 type TradierService interface {
-	Quote(ctx context.Context, in *QuoteRequest, opts ...client.CallOption) (*QuoteResponse, error)
-	GetMarketState(ctx context.Context, in *MarketeStateRequest, opts ...client.CallOption) (*MarketeStateResponse, error)
+	Stream(ctx context.Context, in *StreamRequest, opts ...client.CallOption) (*StreamResponse, error)
 }
 
 type tradierService struct {
@@ -58,19 +57,9 @@ func NewTradierService(name string, c client.Client) TradierService {
 	}
 }
 
-func (c *tradierService) Quote(ctx context.Context, in *QuoteRequest, opts ...client.CallOption) (*QuoteResponse, error) {
-	req := c.c.NewRequest(c.name, "Tradier.Quote", in)
-	out := new(QuoteResponse)
-	err := c.c.Call(ctx, req, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *tradierService) GetMarketState(ctx context.Context, in *MarketeStateRequest, opts ...client.CallOption) (*MarketeStateResponse, error) {
-	req := c.c.NewRequest(c.name, "Tradier.GetMarketState", in)
-	out := new(MarketeStateResponse)
+func (c *tradierService) Stream(ctx context.Context, in *StreamRequest, opts ...client.CallOption) (*StreamResponse, error) {
+	req := c.c.NewRequest(c.name, "Tradier.Stream", in)
+	out := new(StreamResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -81,14 +70,12 @@ func (c *tradierService) GetMarketState(ctx context.Context, in *MarketeStateReq
 // Server API for Tradier service
 
 type TradierHandler interface {
-	Quote(context.Context, *QuoteRequest, *QuoteResponse) error
-	GetMarketState(context.Context, *MarketeStateRequest, *MarketeStateResponse) error
+	Stream(context.Context, *StreamRequest, *StreamResponse) error
 }
 
 func RegisterTradierHandler(s server.Server, hdlr TradierHandler, opts ...server.HandlerOption) error {
 	type tradier interface {
-		Quote(ctx context.Context, in *QuoteRequest, out *QuoteResponse) error
-		GetMarketState(ctx context.Context, in *MarketeStateRequest, out *MarketeStateResponse) error
+		Stream(ctx context.Context, in *StreamRequest, out *StreamResponse) error
 	}
 	type Tradier struct {
 		tradier
@@ -101,10 +88,6 @@ type tradierHandler struct {
 	TradierHandler
 }
 
-func (h *tradierHandler) Quote(ctx context.Context, in *QuoteRequest, out *QuoteResponse) error {
-	return h.TradierHandler.Quote(ctx, in, out)
-}
-
-func (h *tradierHandler) GetMarketState(ctx context.Context, in *MarketeStateRequest, out *MarketeStateResponse) error {
-	return h.TradierHandler.GetMarketState(ctx, in, out)
+func (h *tradierHandler) Stream(ctx context.Context, in *StreamRequest, out *StreamResponse) error {
+	return h.TradierHandler.Stream(ctx, in, out)
 }
