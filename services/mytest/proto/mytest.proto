@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package mytest;
 
-option go_package = "./proto;github.com/egargale/tradier_gomicro_backend/services/mytest";
+option go_package = "./proto;mytest";
 
 service Mytest {
 	rpc Call(Request) returns (Response) {}
