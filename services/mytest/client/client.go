@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/micro/micro/v3/service"
 	proto "github.com/egargale/tradier_gomicro_backend/services/mytest/proto"
+
+	"github.com/golang/protobuf/proto"
+	"github.com/micro/micro/v3/service"
 )
 
 func main() {
