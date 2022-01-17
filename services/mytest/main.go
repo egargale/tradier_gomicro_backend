@@ -1,8 +1,8 @@
 package main
 
 import (
-	"tradier_gomicro_backend/services/tradier/handler"
-	pb "tradier_gomicro_backend/services/tradier/proto"
+	"mytest/handler"
+	pb "mytest/proto"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/logger"
@@ -11,12 +11,12 @@ import (
 func main() {
 	// Create service
 	srv := service.New(
-		service.Name("tradier"),
+		service.Name("mytest"),
 		service.Version("latest"),
 	)
 
 	// Register handler
-	pb.RegisterTradierHandler(srv.Server(), handler.New())
+	pb.RegisterMytestHandler(srv.Server(), new(handler.Mytest))
 
 	// Run service
 	if err := srv.Run(); err != nil {

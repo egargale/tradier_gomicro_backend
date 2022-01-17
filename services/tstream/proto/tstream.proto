@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package tstream;
+
+option go_package = "./proto;tstream";
+
+service Tstream {
+	rpc Stream(StreamingRequest) returns (stream StreamingResponse) {}
+}
+
+message StreamingRequest {
+	string count = 1;
+}
+
+message StreamingResponse {
+	string reply = 1;
+}

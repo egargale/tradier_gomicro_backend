@@ -49,3 +49,17 @@ func Setup() *ClientParams {
 		Account:   account,
 	}
 }
+func Start(){
+	v, err := config.Get("tradier.production.api")
+	api := v.String("")
+	v, err = config.Get("tradier.production.account")
+	account := v.String("")
+	params := DefaultParams(api)
+	client := NewClient(params)
+	client.SelectAccount(account)
+
+	_, session_err := client.GetSessionID()
+	if session_err != nil {
+		logger.Fatalf("Getting Session ID: Error is %s", err)
+	}
+}

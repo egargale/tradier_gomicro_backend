@@ -13,7 +13,6 @@ import (
 	// "github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/pkg/errors"
 	"github.com/valyala/fasthttp"
-	"tradier_gomicro_backend/services/tradier/subscriber"
 	"github.com/micro/micro/v3/service"
 )
 
@@ -42,6 +41,7 @@ var (
 	// ErrNoAccountSelected is returned if account-specific methods
 	// are attempted to be used without selecting an account first.
 	ErrNoAccountSelected = errors.New("no account selected")
+	Topic = "location"
 )
 var SocketConfig Stream
 
@@ -141,7 +141,8 @@ func (tc *Client) GetSessionID() (Stream, error) {
 }
 
 func OpenStreamSocket(id string) {
-	p := service.NewEvent(subscriber.Topic)
+
+	p := service.NewEvent(Topic)
 	
 	// ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	// defer cancel()

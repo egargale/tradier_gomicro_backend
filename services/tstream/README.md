@@ -1,11 +1,11 @@
-# Tradier Service
+# Tstream Service
 
-This is the Tradier service
+This is the Tstream service
 
 Generated with
 
 ```
-micro new tradier
+micro new tstream
 ```
 
 ## Usage
