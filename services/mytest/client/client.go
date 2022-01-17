@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/micro/micro/v3/service"
-	proto "tradier_gomicro_backend/services/mytest/proto"
+	proto "github.com/egargale/tradier_gomicro_backend/services/mytest/proto"
 )
 
 func main() {
