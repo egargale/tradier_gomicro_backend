@@ -5,7 +5,7 @@ import (
 
 	log "github.com/micro/micro/v3/service/logger"
 
-	test2 "test2/proto"
+	test2 "github.com/egargale/tradier_gomicro_backend.git/services/test2/proto"
 )
 
 type Test2 struct{}

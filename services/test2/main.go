@@ -2,7 +2,7 @@ package main
 
 import (
 	"test2/handler"
-	pb "test2/proto"
+	pb "github.com/egargale/tradier_gomicro_backend.git/services/test2/proto"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/logger"
