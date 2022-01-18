@@ -3,9 +3,8 @@ module test/clientStream
 go 1.17
 
 require (
-	github.com/golang/protobuf v1.5.2
+	github.com/egargale/tradier_gomicro_backend/services/test2 v0.0.0-20220118171840-52d69a673dc6
 	github.com/micro/micro/v3 v3.9.0
-	google.golang.org/protobuf v1.27.1
 )
 
 require (
@@ -16,6 +15,7 @@ require (
 	github.com/evanphx/json-patch/v5 v5.0.0 // indirect
 	github.com/go-acme/lego/v3 v3.4.0 // indirect
 	github.com/golang-jwt/jwt v0.0.0-20210529014511-0f726ea0e725 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/hashicorp/go-version v1.2.1 // indirect
@@ -45,6 +45,7 @@ require (
 	golang.org/x/text v0.3.3 // indirect
 	google.golang.org/genproto v0.0.0-20200806141610-86f49bd18e98 // indirect
 	google.golang.org/grpc v1.40.0 // indirect
+	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/fsnotify.v1 v1.4.7 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect

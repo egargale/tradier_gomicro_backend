@@ -7,7 +7,7 @@ import (
 	// "time"
 	// "strconv"
 
-	pb "clientStream/proto"
+	pb "github.com/egargale/tradier_gomicro_backend/services/test2/proto"
 
 	"github.com/micro/micro/v3/service"
 	//"github.com/micro/micro/v3/service/broker"
