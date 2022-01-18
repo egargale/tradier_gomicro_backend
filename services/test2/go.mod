@@ -1,4 +1,4 @@
-module github.com/egargale/tradier_gomicro_backend.git/services/test2
+module github.com/egargale/tradier_gomicro_backend/services/test2
 
 go 1.15
 
