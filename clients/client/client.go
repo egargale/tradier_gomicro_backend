@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	pb "client/proto"
+	pb "github.com/egargale/tradier_gomicro_backend/services/test2/proto"
 
 	// "github.com/golang/protobuf/proto"
 	"github.com/micro/micro/v3/service"
