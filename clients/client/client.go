@@ -48,7 +48,7 @@ func main() {
 
 	bytes, err := json.Marshal(&Healthcheck{
 		Healthy:      true,
-		Service:      "foo",
+		Service:      srv.Name(),
 		Notification: rsp.Msg,
 	})
 
