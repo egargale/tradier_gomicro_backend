@@ -49,11 +49,11 @@ type Healthcheck struct {
 // 	}
 // }
 
-func publishStream(resp pb.StreamingResponse) error {
+func publishStream(service *service.Service, resp pb.StreamingResponse) error {
 
 	bytes, err := json.Marshal(&Healthcheck{
 		Healthy:      true,
-		Service:      "foo",
+		Service:      service.Options().Name,
 		Notification: strconv.Itoa(int(resp.Count)),
 	})
 
@@ -68,11 +68,11 @@ func publishStream(resp pb.StreamingResponse) error {
 		return stream_err
 	}
 	return nil
-}
+} 
 
-func serverStream(cl pb.Test2Service) {
+func serverStream(service *service.Service, proto pb.Test2Service) {
 	// send request to stream count of 10
-	stream, err := cl.Stream(context.Background(), &pb.StreamingRequest{Count: int64(10)})
+	stream, err := proto.Stream(context.Background(), &pb.StreamingRequest{Count: int64(10)})
 	if err != nil {
 		fmt.Println("err:", err)
 		return
@@ -92,7 +92,7 @@ func serverStream(cl pb.Test2Service) {
 		fmt.Printf("got msg %v\n", rsp.Count)
 
 		// Publish to broker
-		pub_err := publishStream(*rsp)
+		pub_err := publishStream(service , *rsp)
 		if pub_err != nil {
 			fmt.Println("Error in broadcasting: Error", pub_err)
 		}
@@ -160,7 +160,7 @@ func main() {
 
 		fmt.Println("ServerStream")
 		// server side stream
-		serverStream(client)
+		serverStream(srv, client)
 
 		time.Sleep(time.Second)
 	}
