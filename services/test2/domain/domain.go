@@ -65,5 +65,5 @@ func Status() {
 		return
 	}
 
-	broker.Publish("health", &broker.Message{Body: bytes})
+	broker.Publish("market", &broker.Message{Body: bytes})
 }

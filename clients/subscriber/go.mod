@@ -2,10 +2,14 @@ module test/subscriber
 
 go 1.17
 
-require github.com/micro/micro/v3 v3.9.0
+require (
+	github.com/micro/micro/v3 v3.9.0
+	github.com/timpalpant/go-tradier v0.0.0-20210704143315-37ec934c77c0
+)
 
 require (
 	github.com/bitly/go-simplejson v0.5.0 // indirect
+	github.com/cenkalti/backoff v2.0.0+incompatible // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
