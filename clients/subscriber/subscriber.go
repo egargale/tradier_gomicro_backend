@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"io"
+	"math/rand"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/broker"
@@ -24,6 +26,42 @@ type Market struct {
 	Description string
 	NextChange  tradier.DateTime
 	NextState   string
+}
+
+func getHelloMarket(service *service.Service, proto pb.Test2Service) {
+
+	// call an endpoint on the service
+	rsp, err := proto.Call(context.Background(), &pb.Request{
+		Name: "Market",
+	})
+	if err != nil {
+		logger.Errorf("Error calling test2: ", err)
+		return
+	}
+	logger.Infof("From test2 service response is %s", rsp.Msg)
+}
+
+func serverStream(service *service.Service, proto pb.Test2Service) {
+	// send request to stream count of 10
+	stream, err := proto.Stream(context.Background(), &pb.StreamingRequest{Count: int64((rand.Intn(100)))})
+	if err != nil {
+		logger.Errorf("err:", err)
+		return
+	}
+	defer stream.Close()
+
+	// server side stream
+	// receive messages for a 10 count
+	for {
+		rsp, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			logger.Fatal(err)
+		}
+		logger.Infof("got msg %v\n", rsp.Count)
+	}
 }
 
 func main() {
@@ -53,20 +91,14 @@ func main() {
 		// logger.Infof("Time: %s State: %s %s %s", mc.Time.String(), mc.State, mc.Description, mc.NextChange.String())
 		logger.Infof(string(msg.Body))
 		if mc.State == "open" {
+			// create and initialise a new service
 			srv := service.New()
-
-			// create the proto client for helloworld
+			// create the proto client for
 			client := pb.NewTest2Service("test2", srv.Client())
-
-			// call an endpoint on the service
-			rsp, err := client.Call(context.Background(), &pb.Request{
-				Name: "Market",
-			})
-			if err != nil {
-				logger.Errorf("Error calling test2: ", err)
-				return err
-			}
-			logger.Infof("From test2 service response is %s", rsp.Msg)
+			// call one service
+			getHelloMarket(srv,client)
+			// cal other service
+			serverStream(srv, client)
 		}
 		return nil
 	}
