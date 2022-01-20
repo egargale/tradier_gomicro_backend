@@ -43,6 +43,7 @@ func NewTest2Endpoints() []*api.Endpoint {
 
 type Test2Service interface {
 	Call(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error)
+	Status(ctx context.Context, in *MarketRequest, opts ...client.CallOption) (*MarketResponse, error)
 	Stream(ctx context.Context, in *StreamingRequest, opts ...client.CallOption) (Test2_StreamService, error)
 	PingPong(ctx context.Context, opts ...client.CallOption) (Test2_PingPongService, error)
 }
@@ -62,6 +63,16 @@ func NewTest2Service(name string, c client.Client) Test2Service {
 func (c *test2Service) Call(ctx context.Context, in *Request, opts ...client.CallOption) (*Response, error) {
 	req := c.c.NewRequest(c.name, "Test2.Call", in)
 	out := new(Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *test2Service) Status(ctx context.Context, in *MarketRequest, opts ...client.CallOption) (*MarketResponse, error) {
+	req := c.c.NewRequest(c.name, "Test2.Status", in)
+	out := new(MarketResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -173,6 +184,7 @@ func (x *test2ServicePingPong) Recv() (*Pong, error) {
 
 type Test2Handler interface {
 	Call(context.Context, *Request, *Response) error
+	Status(context.Context, *MarketRequest, *MarketResponse) error
 	Stream(context.Context, *StreamingRequest, Test2_StreamStream) error
 	PingPong(context.Context, Test2_PingPongStream) error
 }
@@ -180,6 +192,7 @@ type Test2Handler interface {
 func RegisterTest2Handler(s server.Server, hdlr Test2Handler, opts ...server.HandlerOption) error {
 	type test2 interface {
 		Call(ctx context.Context, in *Request, out *Response) error
+		Status(ctx context.Context, in *MarketRequest, out *MarketResponse) error
 		Stream(ctx context.Context, stream server.Stream) error
 		PingPong(ctx context.Context, stream server.Stream) error
 	}
@@ -196,6 +209,10 @@ type test2Handler struct {
 
 func (h *test2Handler) Call(ctx context.Context, in *Request, out *Response) error {
 	return h.Test2Handler.Call(ctx, in, out)
+}
+
+func (h *test2Handler) Status(ctx context.Context, in *MarketRequest, out *MarketResponse) error {
+	return h.Test2Handler.Status(ctx, in, out)
 }
 
 func (h *test2Handler) Stream(ctx context.Context, stream server.Stream) error {

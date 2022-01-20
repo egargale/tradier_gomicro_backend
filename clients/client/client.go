@@ -11,8 +11,8 @@ import (
 	// "github.com/golang/protobuf/proto"
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/broker"
-	// "github.com/micro/micro/v3/service/config"
-	// "github.com/micro/micro/v3/service/logger"
+	"github.com/micro/micro/v3/service/config"
+	"github.com/micro/micro/v3/service/logger"
 )
 
 type Healthcheck struct {
@@ -26,12 +26,13 @@ func main() {
 	srv := service.New(service.Name("foo"))
 
 	// Load the config
-	// val, err := config.Get("tradier.production.account")
-	// if err != nil {
-	// 	logger.Fatalf("Could not load mykey: %v", err)
-	// } else {
-	// 	logger.Infof("mykey = %v", val)
-	// }
+	val, err := config.Get("tradier.production.account")
+
+	if err != nil {
+		logger.Fatalf("Could not load mykey: %v", err)
+	} else {
+		logger.Infof("mykey = %v", val)
+	}
 
 	// create the proto client for helloworld
 	client := pb.NewTest2Service("test2", srv.Client())

@@ -6,9 +6,13 @@ option go_package = "./proto;test2";
 
 service Test2 {
 	rpc Call(Request) returns (Response) {}
+	rpc Status(MarketRequest) returns (MarketResponse) {}
 	rpc Stream(StreamingRequest) returns (stream StreamingResponse) {}
 	rpc PingPong(stream Ping) returns (stream Pong) {}
 }
+
+message MarketRequest {}
+message MarketResponse {}
 
 message Message {
 	string say = 1;
