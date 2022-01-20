@@ -3,6 +3,7 @@ module test/subscriber
 go 1.17
 
 require (
+	github.com/egargale/tradier_gomicro_backend/services/test2 v0.0.0-20220120151027-06ba11d1f881
 	github.com/micro/micro/v3 v3.9.0
 	github.com/timpalpant/go-tradier v0.0.0-20210704143315-37ec934c77c0
 )

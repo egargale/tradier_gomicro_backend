@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/broker"
 	"github.com/micro/micro/v3/service/logger"
 	"github.com/timpalpant/go-tradier"
+
+	pb "github.com/egargale/tradier_gomicro_backend/services/test2/proto"
 )
 
 type Healthcheck struct {
@@ -16,11 +19,11 @@ type Healthcheck struct {
 }
 
 type Market struct {
-	Time      	 tradier.DateTime
-	State     	 string
-	Description  string
-	NextChange   tradier.DateTime
-	NextState    string
+	Time        tradier.DateTime
+	State       string
+	Description string
+	NextChange  tradier.DateTime
+	NextState   string
 }
 
 func main() {
@@ -47,7 +50,24 @@ func main() {
 		if err := json.Unmarshal(msg.Body, &mc); err != nil {
 			return err
 		}
-		logger.Infof("Time: %s State: %s %s %s", mc.Time.String(), mc.State, mc.Description, mc.NextChange.String())
+		// logger.Infof("Time: %s State: %s %s %s", mc.Time.String(), mc.State, mc.Description, mc.NextChange.String())
+		logger.Infof(string(msg.Body))
+		if mc.State == "open" {
+			srv := service.New()
+
+			// create the proto client for helloworld
+			client := pb.NewTest2Service("test2", srv.Client())
+
+			// call an endpoint on the service
+			rsp, err := client.Call(context.Background(), &pb.Request{
+				Name: "Market",
+			})
+			if err != nil {
+				logger.Errorf("Error calling test2: ", err)
+				return err
+			}
+			logger.Infof("From test2 service response is %s", rsp.Msg)
+		}
 		return nil
 	}
 
@@ -60,7 +80,6 @@ func main() {
 	if err1 != nil {
 		logger.Fatal(err1)
 	}
-
 
 	// Run the service
 	if err := srv.Run(); err != nil {
