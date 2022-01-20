@@ -3,9 +3,9 @@ package handler
 import (
 	"context"
 
-	log "github.com/micro/micro/v3/service/logger"
-
+	"github.com/egargale/tradier_gomicro_backend/services/test2/domain"
 	test2 "github.com/egargale/tradier_gomicro_backend/services/test2/proto"
+	log "github.com/micro/micro/v3/service/logger"
 )
 
 type Test2 struct{}
@@ -17,13 +17,14 @@ func (e *Test2) Call(ctx context.Context, req *test2.Request, rsp *test2.Respons
 	return nil
 }
 
-// Call is a single request handler called via client.Status or the generated client code
+// Status is a command handler called via client.Status or the generated client code
 func (e *Test2) Status(ctx context.Context, req *test2.MarketRequest, rsp *test2.MarketResponse) error {
 	log.Info("Received Test2.Status request")
 	// call domain logic
-
+	domain.Status()
 	return nil
 }
+
 // Stream is a server side stream handler called via client.Stream or the generated client code
 func (e *Test2) Stream(ctx context.Context, req *test2.StreamingRequest, stream test2.Test2_StreamStream) error {
 	log.Infof("Received Test2.Stream request with count: %d", req.Count)
