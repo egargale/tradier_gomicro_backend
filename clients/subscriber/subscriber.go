@@ -41,8 +41,7 @@ func publishStream(service *service.Service, resp pb.StreamingResponse) error {
 		return err
 	}
 
-	stream_err := broker.Publish("health", &broker.Message{Body: bytes})
-	if err != nil {
+	if stream_err := broker.Publish("health", &broker.Message{Body: bytes}); stream_err != nil {
 		logger.Errorf("Message not brocasted: Error", stream_err)
 		return stream_err
 	}
@@ -64,7 +63,7 @@ func getHelloMarket(service *service.Service, proto pb.Test2Service) {
 
 func serverStream(service *service.Service, proto pb.Test2Service) {
 	// send request to stream count of 10
-	stream, err := proto.Stream(context.Background(), &pb.StreamingRequest{Count: int64((rand.Intn(100)))})
+	stream, err := proto.Stream(context.Background(), &pb.StreamingRequest{Count: int64((rand.Intn(10)))})
 	if err != nil {
 		logger.Errorf("err:", err)
 		return
@@ -82,8 +81,7 @@ func serverStream(service *service.Service, proto pb.Test2Service) {
 			logger.Fatal(err)
 		}
 		// Publish to broker
-		pub_err := publishStream(service , *rsp)
-		if pub_err != nil {
+		if pub_err := publishStream(service , *rsp); pub_err != nil {
 			logger.Errorf("Error in broadcasting: Error", pub_err)
 		}
 		logger.Infof("got msg %v\n", rsp.Count)
@@ -130,7 +128,6 @@ func main() {
 			logger.Infof("Market Closed")
 		default:
 			logger.Errorf("Do not know the market status!")
-		}
 		}
 		return nil
 	}
