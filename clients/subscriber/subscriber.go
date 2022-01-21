@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"math/rand"
+	"strconv"
 
 	"github.com/micro/micro/v3/service"
 	"github.com/micro/micro/v3/service/broker"
@@ -27,6 +28,26 @@ type Market struct {
 	NextChange  tradier.DateTime
 	NextState   string
 }
+func publishStream(service *service.Service, resp pb.StreamingResponse) error {
+
+	bytes, err := json.Marshal(&Healthcheck{
+		Healthy:      true,
+		Service:      service.Options().Name,
+		Notification: strconv.Itoa(int(resp.Count)),
+	})
+
+	if err != nil {
+		logger.Errorf("Error publishing ", err)
+		return err
+	}
+
+	stream_err := broker.Publish("health", &broker.Message{Body: bytes})
+	if err != nil {
+		logger.Errorf("Message not brocasted: Error", stream_err)
+		return stream_err
+	}
+	return nil
+} 
 
 func getHelloMarket(service *service.Service, proto pb.Test2Service) {
 
@@ -51,7 +72,7 @@ func serverStream(service *service.Service, proto pb.Test2Service) {
 	defer stream.Close()
 
 	// server side stream
-	// receive messages for a 10 count
+	// receive messages for a random countdown
 	for {
 		rsp, err := stream.Recv()
 		if err == io.EOF {
@@ -59,6 +80,11 @@ func serverStream(service *service.Service, proto pb.Test2Service) {
 		}
 		if err != nil {
 			logger.Fatal(err)
+		}
+		// Publish to broker
+		pub_err := publishStream(service , *rsp)
+		if pub_err != nil {
+			logger.Errorf("Error in broadcasting: Error", pub_err)
 		}
 		logger.Infof("got msg %v\n", rsp.Count)
 	}
@@ -90,7 +116,8 @@ func main() {
 		}
 		// logger.Infof("Time: %s State: %s %s %s", mc.Time.String(), mc.State, mc.Description, mc.NextChange.String())
 		logger.Infof(string(msg.Body))
-		if mc.State == "open" {
+		switch mc.State {
+		case "open":
 			// create and initialise a new service
 			srv := service.New()
 			// create the proto client for
@@ -99,6 +126,11 @@ func main() {
 			getHelloMarket(srv,client)
 			// cal other service
 			serverStream(srv, client)
+		case "closed":
+			logger.Infof("Market Closed")
+		default:
+			logger.Errorf("Do not know the market status!")
+		}
 		}
 		return nil
 	}
